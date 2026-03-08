@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>רגעים אמיתיים | צילום חתונות</title>
+  <link rel="icon" type="image/png" href="לוגו שחור.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;700;900&family=Heebo:wght@100;200;300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #09080a;
+      --bg2:       #100e11;
+      --cream:     #f0e6d0;
+      --cream2:    #c8bba5;
+      --gold:      #c4954a;
+      --gold2:     #9e7038;
+      --muted:     #4a4040;
+      --border:    rgba(196,149,74,0.2);
+      --font-serif: 'Frank Ruhl Libre', serif;
+      --font-sans:  'Heebo', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--cream);
+      font-family: var(--font-sans);
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ─── GRAIN OVERLAY ─────────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.35;
+    }
+
+    /* ─── NAV ────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.8rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.4s, padding 0.4s;
+    }
+    nav.scrolled {
+      background: rgba(9,8,10,0.92);
+      backdrop-filter: blur(12px);
+      padding: 1rem 3rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+    }
+    .nav-logo img {
+      height: 48px;
+      width: auto;
+      transition: opacity 0.3s;
+    }
+    .nav-logo img:hover { opacity: 0.8; }
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--cream2);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 300;
+      letter-spacing: 0.08em;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+
+    /* ─── HERO ───────────────────────────────────────────── */
+    #hero {
+      position: relative;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      padding: 0 2rem;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 30% 50%, rgba(196,149,74,0.08) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 80% at 70% 20%, rgba(180,120,60,0.05) 0%, transparent 50%),
+        linear-gradient(180deg, #09080a 0%, #110d0b 50%, #09080a 100%);
+    }
+
+    /* Decorative film-strip lines */
+    .hero-bg::before {
+      content: '';
+      position: absolute;
+      top: 0; bottom: 0;
+      right: 12%;
+      width: 1px;
+      background: linear-gradient(180deg, transparent, rgba(196,149,74,0.3) 30%, rgba(196,149,74,0.3) 70%, transparent);
+    }
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      top: 0; bottom: 0;
+      left: 12%;
+      width: 1px;
+      background: linear-gradient(180deg, transparent, rgba(196,149,74,0.15) 30%, rgba(196,149,74,0.15) 70%, transparent);
+    }
+
+    .hero-content {
+      position: relative;
+      text-align: center;
+      max-width: 900px;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.75rem;
+      font-weight: 300;
+      letter-spacing: 0.4em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 1s 0.3s forwards;
+    }
+
+    .hero-title {
+      font-family: var(--font-sans);
+      font-size: clamp(4rem, 12vw, 9rem);
+      font-weight: 200;
+      line-height: 0.95;
+      color: var(--cream);
+      letter-spacing: 0.05em;
+      margin-bottom: 1rem;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeUp 1s 0.5s forwards;
+    }
+
+    .hero-title em {
+      font-style: normal;
+      color: transparent;
+      font-weight: 100;
+      -webkit-text-stroke: 1px var(--gold);
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      font-weight: 200;
+      letter-spacing: 0.15em;
+      color: var(--cream2);
+      margin-bottom: 3.5rem;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 1s 0.7s forwards;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 1rem;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 1s 0.9s forwards;
+    }
+
+    .btn-primary {
+      padding: 0.9rem 2.5rem;
+      background: var(--gold);
+      color: var(--bg);
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.3s, transform 0.3s;
+      display: inline-block;
+    }
+    .btn-primary:hover {
+      background: var(--gold2);
+      transform: translateY(-2px);
+    }
+
+    .btn-ghost {
+      padding: 0.9rem 2.5rem;
+      border: 1px solid var(--border);
+      color: var(--cream2);
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      text-decoration: none;
+      transition: border-color 0.3s, color 0.3s, transform 0.3s;
+      display: inline-block;
+    }
+    .btn-ghost:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+      transform: translateY(-2px);
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 3rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+      opacity: 0;
+      animation: fadeIn 1s 1.5s forwards;
+    }
+    .hero-scroll span {
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+    .scroll-line {
+      width: 1px;
+      height: 50px;
+      background: linear-gradient(180deg, var(--gold), transparent);
+      animation: scrollPulse 2s infinite;
+    }
+
+    /* ─── SECTION COMMON ─────────────────────────────────── */
+    section { padding: 7rem 2rem; }
+
+    .section-tag {
+      font-size: 0.7rem;
+      letter-spacing: 0.4em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 700;
+      line-height: 1.1;
+      color: var(--cream);
+      margin-bottom: 1.5rem;
+    }
+
+    .section-lead {
+      font-size: 1rem;
+      font-weight: 300;
+      line-height: 1.8;
+      color: var(--cream2);
+      max-width: 550px;
+    }
+
+    .divider {
+      width: 60px;
+      height: 1px;
+      background: var(--gold);
+      margin: 2rem 0;
+    }
+
+    /* ─── ABOUT ──────────────────────────────────────────── */
+    #about {
+      background: var(--bg2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    #about::before {
+      content: '"';
+      position: absolute;
+      font-family: var(--font-serif);
+      font-size: 30rem;
+      line-height: 1;
+      color: rgba(196,149,74,0.03);
+      top: -4rem;
+      left: -2rem;
+      font-weight: 900;
+      pointer-events: none;
+    }
+
+    .about-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: center;
+    }
+
+    .about-visual {
+      position: relative;
+    }
+
+    .about-photo {
+      width: 100%;
+      aspect-ratio: 3/4;
+      background: linear-gradient(135deg, #1a120a 0%, #2a1e12 40%, #1a1208 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .about-photo::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 40% 30%, rgba(196,149,74,0.2) 0%, transparent 50%),
+        radial-gradient(ellipse at 60% 70%, rgba(180,100,50,0.15) 0%, transparent 40%);
+    }
+
+    .about-photo-label {
+      position: absolute;
+      bottom: -1.5rem;
+      left: -1.5rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 1.2rem 1.8rem;
+    }
+    .about-photo-label strong {
+      display: block;
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--gold);
+      line-height: 1;
+    }
+    .about-photo-label span {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      color: var(--cream2);
+    }
+
+    .about-text .section-lead { max-width: 100%; }
+
+    .about-quote {
+      margin-top: 2rem;
+      padding-right: 1.5rem;
+      border-right: 2px solid var(--gold);
+      font-family: var(--font-serif);
+      font-size: 1.2rem;
+      font-style: italic;
+      color: var(--cream2);
+      line-height: 1.7;
+    }
+
+    /* ─── GALLERY ────────────────────────────────────────── */
+    #gallery {
+      background: var(--bg);
+      position: relative;
+    }
+
+    .gallery-header {
+      max-width: 1100px;
+      margin: 0 auto 3.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .gallery-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-template-rows: repeat(3, 200px);
+      gap: 12px;
+    }
+
+    .gallery-item {
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+    }
+    .gallery-item::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(9,8,10,0.3);
+      transition: opacity 0.5s;
+    }
+    .gallery-item:hover::after { opacity: 0; }
+
+    .gallery-item .photo-inner {
+      width: 100%;
+      height: 100%;
+      transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .gallery-item:hover .photo-inner { transform: scale(1.06); }
+
+    /* Layout positions */
+    .g1 { grid-column: 1/5;  grid-row: 1/3; }
+    .g2 { grid-column: 5/8;  grid-row: 1/2; }
+    .g3 { grid-column: 8/13; grid-row: 1/3; }
+    .g4 { grid-column: 5/8;  grid-row: 2/3; }
+    .g5 { grid-column: 1/4;  grid-row: 3/4; }
+    .g6 { grid-column: 4/9;  grid-row: 3/4; }
+    .g7 { grid-column: 9/13; grid-row: 3/4; }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center top;
+      background: #0a0907;
+      display: block;
+      cursor: zoom-in;
+    }
+
+    /* ─── LIGHTBOX ───────────────────────────────────────── */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(0,0,0,0.95);
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox-img {
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+      box-shadow: 0 0 80px rgba(0,0,0,0.8);
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 1.5rem;
+      left: 1.5rem;
+      width: 44px;
+      height: 44px;
+      background: none;
+      border: 1px solid rgba(255,255,255,0.2);
+      color: var(--cream2);
+      font-size: 1.4rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .lightbox-close:hover { border-color: var(--gold); color: var(--gold); }
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: 1px solid rgba(255,255,255,0.2);
+      color: var(--cream2);
+      font-size: 1.2rem;
+      width: 44px;
+      height: 44px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .lightbox-nav:hover { border-color: var(--gold); color: var(--gold); }
+    .lightbox-prev { right: 1.5rem; }
+    .lightbox-next { left: 1.5rem; }
+    .lightbox-counter {
+      position: absolute;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      color: var(--muted);
+    }
+
+    /* ─── SERVICES ───────────────────────────────────────── */
+    #services {
+      background: var(--bg2);
+    }
+
+    .services-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .services-header {
+      margin-bottom: 4rem;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .service-card {
+      background: var(--bg2);
+      padding: 3rem 2.5rem;
+      position: relative;
+      transition: background 0.4s;
+    }
+    .service-card:hover { background: #140f10; }
+
+    .service-card.featured {
+      background: linear-gradient(160deg, #1a1208 0%, #120e07 100%);
+    }
+    .service-card.featured:hover {
+      background: linear-gradient(160deg, #201609 0%, #161108 100%);
+    }
+
+    .service-tag {
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+
+    .service-name {
+      font-family: var(--font-serif);
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--cream);
+      margin-bottom: 0.5rem;
+    }
+
+    .service-price {
+      font-size: 0.8rem;
+      color: var(--cream2);
+      letter-spacing: 0.05em;
+      margin-bottom: 2rem;
+    }
+
+    .service-desc {
+      font-size: 0.9rem;
+      line-height: 1.8;
+      color: var(--cream2);
+      margin-bottom: 2rem;
+    }
+
+    .service-features {
+      list-style: none;
+      margin-bottom: 2.5rem;
+    }
+    .service-features li {
+      font-size: 0.82rem;
+      color: var(--cream2);
+      padding: 0.6rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .service-features li::before {
+      content: '';
+      width: 16px;
+      height: 1px;
+      background: var(--gold);
+      flex-shrink: 0;
+    }
+
+    .featured-badge {
+      position: absolute;
+      top: 1.5rem;
+      left: 2.5rem;
+      font-size: 0.6rem;
+      letter-spacing: 0.25em;
+      color: var(--bg);
+      background: var(--gold);
+      padding: 0.3rem 0.8rem;
+      text-transform: uppercase;
+    }
+
+    /* ─── TESTIMONIALS ───────────────────────────────────── */
+    #testimonials {
+      background: var(--bg);
+      overflow: hidden;
+      position: relative;
+    }
+
+    #testimonials::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
+    .testimonials-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      margin-top: 4rem;
+    }
+
+    .testimonial-card {
+      padding: 2.5rem;
+      border: 1px solid var(--border);
+      position: relative;
+      transition: border-color 0.4s;
+    }
+    .testimonial-card:hover { border-color: rgba(196,149,74,0.4); }
+
+    .quote-mark {
+      font-family: var(--font-serif);
+      font-size: 5rem;
+      line-height: 0.6;
+      color: var(--gold);
+      opacity: 0.4;
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+
+    .testimonial-text {
+      font-size: 0.95rem;
+      line-height: 1.9;
+      color: var(--cream2);
+      font-style: italic;
+      margin-bottom: 2rem;
+    }
+
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .author-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold2), var(--muted));
+      flex-shrink: 0;
+    }
+    .author-name {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--cream);
+    }
+    .author-event {
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    .testimonials-stars {
+      display: flex;
+      gap: 3px;
+      margin-bottom: 1.2rem;
+    }
+    .star {
+      color: var(--gold);
+      font-size: 0.8rem;
+    }
+
+    /* ─── CONTACT ────────────────────────────────────────── */
+    #contact {
+      background: var(--bg2);
+      position: relative;
+    }
+
+    #contact::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 80% at 50% 100%, rgba(196,149,74,0.04) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .contact-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 6rem;
+      align-items: start;
+    }
+
+    .contact-info {
+      padding-top: 1rem;
+    }
+
+    .contact-detail {
+      margin-bottom: 2rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .contact-detail:last-child { border-bottom: none; }
+    .contact-detail-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+    .contact-detail-value {
+      font-size: 1rem;
+      color: var(--cream);
+      font-weight: 300;
+    }
+
+    .contact-form {
+      position: relative;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 0.6rem;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 0;
+      padding: 0.9rem 1.1rem;
+      color: var(--cream);
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      font-weight: 300;
+      outline: none;
+      transition: border-color 0.3s, background 0.3s;
+      direction: rtl;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--gold);
+      background: rgba(196,149,74,0.04);
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+      color: var(--muted);
+    }
+    .form-group select option {
+      background: var(--bg2);
+      color: var(--cream);
+    }
+    .form-group textarea {
+      resize: vertical;
+      min-height: 130px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .form-submit {
+      width: 100%;
+      padding: 1rem;
+      background: var(--gold);
+      color: var(--bg);
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+      text-transform: uppercase;
+      margin-top: 0.5rem;
+    }
+    .form-submit:hover {
+      background: var(--gold2);
+      transform: translateY(-1px);
+    }
+    .form-submit:active { transform: translateY(0); }
+
+    /* ─── FOOTER ─────────────────────────────────────────── */
+    footer {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+    .footer-logo {
+      margin-bottom: 0.5rem;
+      display: flex;
+      justify-content: center;
+    }
+    .footer-logo img {
+      height: 60px;
+      width: auto;
+    }
+    .footer-tagline {
+      font-size: 0.75rem;
+      letter-spacing: 0.25em;
+      color: var(--muted);
+      margin-bottom: 2rem;
+    }
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      list-style: none;
+      margin-bottom: 2rem;
+    }
+    .footer-links a {
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      transition: color 0.3s;
+    }
+    .footer-links a:hover { color: var(--gold); }
+    .footer-copy {
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    /* ─── ANIMATIONS ─────────────────────────────────────── */
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.3; transform: scaleY(0.6); transform-origin: top; }
+      50% { opacity: 1; transform: scaleY(1); transform-origin: top; }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* ─── RESPONSIVE ─────────────────────────────────────── */
+    @media (max-width: 900px) {
+      nav { padding: 1.4rem 1.5rem; }
+      nav.scrolled { padding: 0.8rem 1.5rem; }
+      .nav-links { gap: 1.5rem; }
+
+      .about-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .about-visual { max-width: 420px; }
+
+      .gallery-grid {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto;
+      }
+      .g1, .g2, .g3, .g4, .g5, .g6, .g7 {
+        grid-column: auto;
+        grid-row: auto;
+        aspect-ratio: 4/3;
+      }
+
+      .services-grid { grid-template-columns: 1fr; }
+
+      .testimonials-grid { grid-template-columns: 1fr; }
+
+      .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
+
+      .form-grid { grid-template-columns: 1fr; }
+
+      .hero-title { font-size: clamp(3rem, 15vw, 5rem); }
+    }
+
+    @media (max-width: 600px) {
+      .nav-links { display: none; }
+      section { padding: 4rem 1.2rem; }
+      .hero-cta { flex-direction: column; width: 100%; }
+      .btn-primary, .btn-ghost { text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <a href="#hero" class="nav-logo"><img src="לוגו לבן.png" alt="רגעים אמיתיים"></a>
+    <ul class="nav-links">
+      <li><a href="#about">אודות</a></li>
+      <li><a href="#gallery">גלריה</a></li>
+      <li><a href="#services">חבילות</a></li>
+      <li><a href="#testimonials">המלצות</a></li>
+      <li><a href="#contact">יצירת קשר</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">צילום חתונות &amp; זוגיות</p>
+      <h1 class="hero-title">
+        רגעים<br><em>אמיתיים</em>
+      </h1>
+      <p class="hero-subtitle">כי הרגשות הכי יפים הם אלה שקורים מעצמם</p>
+      <div class="hero-cta">
+        <a href="#contact" class="btn-primary">בואו נדבר</a>
+        <a href="#gallery" class="btn-ghost">הגלריה שלנו</a>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <div class="scroll-line"></div>
+      <span>גלול למטה</span>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="about-inner">
+      <div class="about-visual reveal">
+        <div class="about-photo">
+          <img src="IMG_4892.png" alt="הצלם שלנו" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
+        </div>
+        <div class="about-photo-label">
+          <strong>+200</strong>
+          <span>זוגות מאושרים</span>
+        </div>
+      </div>
+      <div class="about-text reveal reveal-delay-2">
+        <p class="section-tag">מי אנחנו</p>
+        <h2 class="section-title">צילום שמספר<br>את הסיפור שלכם</h2>
+        <div class="divider"></div>
+        <p class="section-lead">
+          אנו מני וליז פל מאמינים שהרגעים הכי יפים בחתונה הם אלה שקורים בין הצילומים המסודרים — הצחוק, הדמעות, הנגיעות הקטנות. אנחנו כאן כדי ללכוד אותם לנצח.
+        </p>
+        <blockquote class="about-quote">
+          "תמונה טובה לא רק שומרת רגע — היא מחזירה אתכם ישירות לתוכו."
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section id="gallery">
+    <div class="gallery-header reveal">
+      <div>
+        <p class="section-tag">עבודות נבחרות</p>
+        <h2 class="section-title">הגלריה שלנו</h2>
+      </div>
+      <a href="gallery.html" class="btn-ghost">לכל הגלריה</a>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item g1 reveal">
+        <img src="תמונות/ld1.jpg" alt="צילום חתונה">
+      </div>
+      <div class="gallery-item g2 reveal reveal-delay-1">
+        <img src="תמונות/ld2.jpg" alt="צילום חתונה">
+      </div>
+      <div class="gallery-item g3 reveal reveal-delay-2">
+        <img src="תמונות/ld3.jpg" alt="צילום חתונה">
+      </div>
+      <div class="gallery-item g4 reveal reveal-delay-1">
+        <img src="תמונות/ld4.JPG" alt="צילום חתונה">
+      </div>
+      <div class="gallery-item g5 reveal reveal-delay-3">
+        <img src="תמונות/ld5.JPG" alt="צילום חתונה">
+      </div>
+      <div class="gallery-item g6 reveal reveal-delay-2">
+        <img src="תמונות/ld6.JPG" alt="צילום חתונה">
+      </div>
+      <div class="gallery-item g7 reveal reveal-delay-1">
+        <img src="תמונות/ld7.jpg" alt="צילום חתונה">
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="services-inner">
+      <div class="services-header reveal">
+        <p class="section-tag">החבילות שלנו</p>
+        <h2 class="section-title">השקעה ברגעים<br>שלא חוזרים</h2>
+      </div>
+      <div class="services-grid">
+
+        <!-- Package 1 -->
+        <div class="service-card reveal">
+          <p class="service-tag">חבילה בסיסית</p>
+          <h3 class="service-name">רגע ראשון</h3>
+          <p class="service-price">החל מ־ 4,500 ₪</p>
+          <p class="service-desc">מושלם לזוגות שמחפשים תיעוד אמיתי ומרגש של היום המיוחד.</p>
+          <ul class="service-features">
+            <li>8 שעות צילום</li>
+            <li>צלם מקצועי אחד</li>
+            <li>150+ תמונות ערוכות</li>
+            <li>גלריה מקוונת פרטית</li>
+            <li>מסירה תוך 4 שבועות</li>
+          </ul>
+          <a href="#contact" class="btn-ghost">לפרטים נוספים</a>
+        </div>
+
+        <!-- Package 2 - Featured -->
+        <div class="service-card featured reveal reveal-delay-1">
+          <span class="featured-badge">הכי פופולרי</span>
+          <p class="service-tag">חבילה מלאה</p>
+          <h3 class="service-name">יום שלם</h3>
+          <p class="service-price">החל מ־ 7,900 ₪</p>
+          <p class="service-desc">חוויה צילומית מלאה מוקפדת ממש — מהכנות ועד לרקודים האחרונים.</p>
+          <ul class="service-features">
+            <li>12 שעות צילום</li>
+            <li>שני צלמים</li>
+            <li>300+ תמונות ערוכות</li>
+            <li>אלבום יוקרה מודפס</li>
+            <li>גלריה מקוונת פרטית</li>
+            <li>מסירה תוך 3 שבועות</li>
+          </ul>
+          <a href="#contact" class="btn-primary">לפרטים נוספים</a>
+        </div>
+
+        <!-- Package 3 -->
+        <div class="service-card reveal reveal-delay-2">
+          <p class="service-tag">חבילת פרימיום</p>
+          <h3 class="service-name">זיכרון נצחי</h3>
+          <p class="service-price">החל מ־ 12,500 ₪</p>
+          <p class="service-desc">הפקה מלאה עם וידאו, צילומי אנגייג'מנט וכל מה שלב יכול לחפוץ.</p>
+          <ul class="service-features">
+            <li>יום צילום מלא + ערב</li>
+            <li>שני צלמים + וידאוגרף</li>
+            <li>500+ תמונות ערוכות</li>
+            <li>סרטון חתונה (5 דק')</li>
+            <li>צילומי אנגייג'מנט</li>
+            <li>אלבום יוקרה + בוק</li>
+            <li>מסירה תוך 3 שבועות</li>
+          </ul>
+          <a href="#contact" class="btn-ghost">לפרטים נוספים</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section id="testimonials">
+    <div class="testimonials-inner">
+      <div class="reveal">
+        <p class="section-tag">מה אומרים עלינו</p>
+        <h2 class="section-title">הלקוחות שלנו<br>מדברים</h2>
+      </div>
+      <div class="testimonials-grid">
+
+        <div class="testimonial-card reveal reveal-delay-1">
+          <div class="testimonials-stars">
+            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+          </div>
+          <span class="quote-mark">"</span>
+          <p class="testimonial-text">מהרגע הראשון הרגשנו שאנחנו בידיים טובות. התמונות יצאו מעבר לכל ציפייה — כל רגע תועד בצורה כל כך טבעית ואמיתית. אנחנו פותחים את האלבום שוב ושוב.</p>
+          <div class="testimonial-author">
+            <div class="author-avatar"></div>
+            <div>
+              <p class="author-name">מיכל ואיתי לוי</p>
+              <p class="author-event">חתונת קיץ 2024</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card reveal reveal-delay-2">
+          <div class="testimonials-stars">
+            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+          </div>
+          <span class="quote-mark">"</span>
+          <p class="testimonial-text">לא האמנתי שתמונות יוכלו להרגיש כל כך חיות. כשקיבלנו את האלבום בכינו מרוב שמחה. ממליצים בחום לכל זוג שרוצה שהרגשות יישמרו לנצח.</p>
+          <div class="testimonial-author">
+            <div class="author-avatar"></div>
+            <div>
+              <p class="author-name">שירה ודניאל כהן</p>
+              <p class="author-event">חתונת חורף 2024</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card reveal reveal-delay-3">
+          <div class="testimonials-stars">
+            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+          </div>
+          <span class="quote-mark">"</span>
+          <p class="testimonial-text">הצוות היה נעים, מקצועי ובלתי נראה — בדיוק מה שרצינו. התוצאות מדהימות. כל חבר שרואה את האלבום שואל מיד לאיזה צלם פנינו.</p>
+          <div class="testimonial-author">
+            <div class="author-avatar"></div>
+            <div>
+              <p class="author-name">נועה ויונתן אברהם</p>
+              <p class="author-event">חתונת אביב 2023</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact-inner">
+      <div class="contact-info reveal">
+        <p class="section-tag">יצירת קשר</p>
+        <h2 class="section-title">מוכנים לשמור<br>את הרגעים שלכם?</h2>
+        <div class="divider"></div>
+        <p class="section-lead" style="margin-bottom: 3rem;">
+          שמחנו לשמוע עליכם ועל החתונה שלכם. מלאו את הטופס ונחזור אליכם בהקדם.
+        </p>
+
+        <div class="contact-detail">
+          <p class="contact-detail-label">טלפון</p>
+          <p class="contact-detail-value">050-000-0000</p>
+        </div>
+        <div class="contact-detail">
+          <p class="contact-detail-label">אימייל</p>
+          <p class="contact-detail-value">hello@regayim.co.il</p>
+        </div>
+        <div class="contact-detail">
+          <p class="contact-detail-label">אינסטגרם</p>
+          <p class="contact-detail-value">@regayim.amitiyim</p>
+        </div>
+        <div class="contact-detail">
+          <p class="contact-detail-label">שעות פעילות</p>
+          <p class="contact-detail-value">ראשון–חמישי, 09:00–18:00</p>
+        </div>
+      </div>
+
+      <div class="contact-form reveal reveal-delay-2">
+        <form onsubmit="handleSubmit(event)">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="fname">שם פרטי</label>
+              <input type="text" id="fname" name="fname" placeholder="ישראל" required>
+            </div>
+            <div class="form-group">
+              <label for="lname">שם משפחה</label>
+              <input type="text" id="lname" name="lname" placeholder="ישראלי" required>
+            </div>
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="phone">טלפון</label>
+              <input type="tel" id="phone" name="phone" placeholder="050-000-0000" required>
+            </div>
+            <div class="form-group">
+              <label for="email">אימייל</label>
+              <input type="email" id="email" name="email" placeholder="you@mail.com" required>
+            </div>
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="date">תאריך החתונה</label>
+              <input type="date" id="date" name="date">
+            </div>
+            <div class="form-group">
+              <label for="package">חבילה מבוקשת</label>
+              <select id="package" name="package">
+                <option value="">בחרו חבילה</option>
+                <option value="basic">רגע ראשון</option>
+                <option value="full">יום שלם</option>
+                <option value="premium">זיכרון נצחי</option>
+                <option value="custom">מותאם אישית</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="message">ספרו לנו עליכם</label>
+            <textarea id="message" name="message" placeholder="איפה החתונה? כמה אורחים? כל מה שחשוב לכם לשתף..."></textarea>
+          </div>
+          <button type="submit" class="form-submit">שלחו הודעה</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
+    <button class="lightbox-close" id="lightboxClose" aria-label="סגור">✕</button>
+    <button class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="הבא">›</button>
+    <img class="lightbox-img" id="lightboxImg" src="" alt="">
+    <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="הקודם">‹</button>
+    <span class="lightbox-counter" id="lightboxCounter"></span>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo"><img src="לוגו לבן.png" alt="רגעים אמיתיים"></div>
+    <p class="footer-tagline">צילום חתונות ואירועים</p>
+    <ul class="footer-links">
+      <li><a href="#about">אודות</a></li>
+      <li><a href="#gallery">גלריה</a></li>
+      <li><a href="#services">חבילות</a></li>
+      <li><a href="#testimonials">המלצות</a></li>
+      <li><a href="#contact">יצירת קשר</a></li>
+    </ul>
+    <p class="footer-copy">© 2025 רגעים אמיתיים. כל הזכויות שמורות.</p>
+  </footer>
+
+  <script>
+    // Navbar scroll effect
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    // Intersection Observer for reveal animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Form submission
+    function handleSubmit(e) {
+      e.preventDefault();
+      const btn = e.target.querySelector('.form-submit');
+      btn.textContent = 'תודה! נחזור אליכם בקרוב ✓';
+      btn.style.background = '#4a7c59';
+      btn.disabled = true;
+      setTimeout(() => {
+        btn.textContent = 'שלחו הודעה';
+        btn.style.background = '';
+        btn.disabled = false;
+        e.target.reset();
+      }, 4000);
+    }
+
+    // Smooth parallax for hero
+    window.addEventListener('scroll', () => {
+      const hero = document.getElementById('hero');
+      const scrolled = window.scrollY;
+      if (scrolled < window.innerHeight) {
+        hero.style.transform = `translateY(${scrolled * 0.3}px)`;
+      }
+    });
+
+    // Lightbox
+    const galleryImgs = Array.from(document.querySelectorAll('.gallery-item img'));
+    const lightbox    = document.getElementById('lightbox');
+    const lbImg       = document.getElementById('lightboxImg');
+    const lbCounter   = document.getElementById('lightboxCounter');
+    let currentIdx    = 0;
+
+    function openLightbox(idx) {
+      currentIdx = idx;
+      lbImg.src = galleryImgs[idx].src;
+      lbImg.alt = galleryImgs[idx].alt;
+      lbCounter.textContent = `${idx + 1} / ${galleryImgs.length}`;
+      lightbox.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+      lightbox.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    function navigate(dir) {
+      currentIdx = (currentIdx + dir + galleryImgs.length) % galleryImgs.length;
+      lbImg.src = galleryImgs[currentIdx].src;
+      lbCounter.textContent = `${currentIdx + 1} / ${galleryImgs.length}`;
+    }
+
+    galleryImgs.forEach((img, i) => img.addEventListener('click', () => openLightbox(i)));
+    document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+    document.getElementById('lightboxPrev').addEventListener('click', () => navigate(1));
+    document.getElementById('lightboxNext').addEventListener('click', () => navigate(-1));
+    lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+    document.addEventListener('keydown', e => {
+      if (!lightbox.classList.contains('open')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowRight') navigate(1);
+      if (e.key === 'ArrowLeft')  navigate(-1);
+    });
+  </script>
+</body>
+</html>
